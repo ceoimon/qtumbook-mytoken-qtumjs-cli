@@ -1,11 +1,18 @@
 {
-  "name": "mytoken-qtumjs",
+  "name": "mytoken-qtumjs-eth",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "testrpc": "ganache-cli -d 'qtumjs'"
+  },
   "dependencies": {
     "minimist": "^1.2.0",
     "ora": "^1.3.0",
-    "qtumjs": "^1.8.1"
+    "qtumjs-eth": "^0.1.0"
+  },
+  "devDependencies": {
+    "ganache-cli": "^6.1.6",
+    "openzeppelin-solidity": "1.11.0"
   }
 }

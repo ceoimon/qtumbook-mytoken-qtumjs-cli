@@ -3,18 +3,18 @@ const ora = require("ora")
 const parseArgs = require("minimist")
 
 const {
-  Qtum,
-} = require("qtumjs")
+  Ethereum,
+} = require("qtumjs-eth")
 
-const repoData = require("./solar.json")
-const qtum = new Qtum("http://qtum:test@localhost:4889", repoData)
-const myToken = qtum.contract("zeppelin-solidity/contracts/token/CappedToken.sol")
+const repoData = require("./solar.development.json")
+const ethereum = new Ethereum("http://localhost:8545", repoData)
+const myToken = ethereum.contract("CappedToken")
 
 async function totalSupply() {
   const result = await myToken.call("totalSupply")
 
   // supply is a BigNumber instance (see: bn.js)
-  const supply = result.outputs[0]
+  const supply = result[0]
 
   console.log("supply", supply.toNumber())
 }
@@ -23,19 +23,21 @@ async function balanceOf(owner) {
   const res = await myToken.call("balanceOf", [owner])
 
   // balance is a BigNumber instance (see: bn.js)
-  const balance = res.outputs[0]
+  const balance = res[0]
 
   console.log(`balance:`, balance.toNumber())
 }
 
 async function mint(toAddr, amount) {
   const tx = await myToken.send("mint", [toAddr, amount])
+  const callResult = await myToken.call("mint", [toAddr, amount])
+  console.log(callResult)
 
   console.log("mint tx:", tx.txid)
   console.log(tx)
 
-  // or: await tx.confirm(1)
-  const confirmation = tx.confirm(1)
+  // or: await tx.confirm(0)
+  const confirmation = tx.confirm(0)
   ora.promise(confirmation, "confirm mint")
   const receipt = await confirmation
   console.log("tx receipt:", JSON.stringify(receipt, null, 2))
@@ -43,14 +45,14 @@ async function mint(toAddr, amount) {
 
 async function transfer(fromAddr, toAddr, amount) {
   const tx = await myToken.send("transfer", [toAddr, amount], {
-    senderAddress: fromAddr,
+    from: fromAddr
   })
 
   console.log("transfer tx:", tx.txid)
   console.log(tx)
 
-  // or: await tx.confirm(1)
-  const confirmation = tx.confirm(1)
+  // or: await tx.confirm(0)
+  const confirmation = tx.confirm(0)
   ora.promise(confirmation, "confirm transfer")
   await confirmation
 }
@@ -61,21 +63,21 @@ async function streamEvents() {
 
   myToken.onLog((entry) => {
     console.log(entry)
-  }, { minconf: 1 })
+  })
 }
 
 async function getLogs(fromBlock, toBlock) {
   const logs = await myToken.logs({
     fromBlock,
     toBlock,
-    minconf: 1,
   })
 
   console.log(JSON.stringify(logs, null, 2))
 }
 
 async function main() {
-  const argv = parseArgs(process.argv.slice(2))
+  const originalArgv = process.argv.slice(2)
+  const argv = parseArgs(originalArgv)
 
   const cmd = argv._[0]
 
@@ -90,21 +92,21 @@ async function main() {
       await totalSupply()
       break
     case "balance":
-      const owner = argv._[1]
+      const owner = originalArgv[1]
       if (!owner) {
         throw new Error("please specify an address")
       }
       await balanceOf(owner)
       break
     case "mint":
-      const mintToAddr = argv._[1]
+      const mintToAddr = originalArgv[1]
       const mintAmount = parseInt(argv._[2])
       await mint(mintToAddr, mintAmount)
 
       break
     case "transfer":
-      const fromAddr = argv._[1]
-      const toAddr = argv._[2]
+      const fromAddr = originalArgv[1]
+      const toAddr = originalArgv[2]
       const amount = argv._[3]
 
       await transfer(fromAddr, toAddr, amount)

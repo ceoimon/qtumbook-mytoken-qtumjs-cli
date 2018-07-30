@@ -1,174 +1,227 @@
-See [companion tutorial](https://github.com/qtumproject/qtumbook/blob/master/part2/erc20-js.md).
-
 # A NodeJS CLI Tool For ERC20 Token
 
-Install dependencies
+## Install dependencies
 
 ```
 yarn install
 ```
-## Running Qtum
+
+## Running [Ethereum Test RPC (Ganache CLI)](https://github.com/trufflesuite/ganache-cli):
+
+```bash
+yarn testrpc
+#or npm run testrpc
+```
+
+## Deploy example contact in another terminal window:
 
 ```
-docker run -it --rm \
-  --name mytoken \
-  -v `pwd`:/dapp \
-  -p 4889:3889 \
-  hayeah/qtumportal
+solar deploy node_modules/openzeppelin-solidity/contracts/token/ERC20/CappedToken.sol:CappedToken '[21000000]
+'
 ```
 
 ## Check Balance
 
 ```
-node index.js balance dcd32b87270aeb980333213da2549c9907e09e94
+node index.js balance 0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1
 ```
 
 output:
 
 ```
-balance: 1000
+balance: 0
 ```
 
 ## Mint Tokens
 
 ```
-node index.js mint dcd32b87270aeb980333213da2549c9907e09e94 1000
+node index.js mint 0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1 1000
 ```
 
-output:
+example output:
 
 ```
-mint tx: 4896ff3c75f3c6010218091fd90566abd11042ace3df5d4de548fd78e8b365eb
-{
-  amount: 0,
-  fee: -0.081064,
-  confirmations: 0,
-  trusted: true,
-  txid: '4896ff3c75f3c6010218091fd90566abd11042ace3df5d4de548fd78e8b365eb',
-  walletconflicts: [],
-  time: 1514355700,
-  timereceived: 1514355700,
-  'bip125-replaceable': 'no',
-  details:
-   [ { account: '',
-       category: 'send',
-       amount: 0,
-       vout: 0,
-       fee: -0.081064,
-       abandoned: false } ],
-  hex: '020000000120383121b46368ce4d7c825111f86c5a992cdab847ea758875a042b869950c0f0100000048473044022069ad76c21384a65f1eefe404f598b2b0ce4ffdc4b80c5d5dcdb5f5153eef55ba02207e7a22e4e8548e292fe65f6e7cd3021c862e669b4f292883daa4a0e3e52e5a2a01feffffff02000000000000000063010403400d0301284440c10f19000000000000000000000000dcd32b87270aeb980333213da2549c9907e09e9400000000
-000000000000000000000000000000000000000000000000000003e814a778c05f1d0f70f1133f4bbf78c1a9a7bf84aed3c2606ecea8d10100001976a914dcd32b87270aeb980333213da2549c9907e09e9488ac69070000',
-  method: 'mint'
+mint tx: 0xd7f0ba07750626ffd82fa8ad909e2657bc3b181a7896e69212c55f8f83ae89f7
+{ hash: '0xd7f0ba07750626ffd82fa8ad909e2657bc3b181a7896e69212c55f8f83ae89f7',
+  nonce: '0x01',
+  blockHash: '0xdf328377bbbe15edb59928bb0507a9f7e252e973bcd75decd579e94ee6d9e4af',
+  blockNumber: '0x02',
+  transactionIndex: '0x00',
+  from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+  to: '0xe78a0f7e598cc8b0bb87894b0f60dd2a88d6a8ab',
+  value: '0x0',
+  gas: '0x030d40',
+  gasPrice: '0x04a817c800',
+  input: '0x40c10f1900000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c100000000000000000000000000000000000000000000000000000000000003e8',
+  txid: '0xd7f0ba07750626ffd82fa8ad909e2657bc3b181a7896e69212c55f8f83ae89f7',
+  method: 'mint',
+  confirm: [Function: confirm]
 }
-mint confirmed
+✔ confirm mint
+tx receipt: {
+  "transactionHash": "0xd7f0ba07750626ffd82fa8ad909e2657bc3b181a7896e69212c55f8f83ae89f7",
+  "transactionIndex": "0x00",
+  "blockHash": "0xdf328377bbbe15edb59928bb0507a9f7e252e973bcd75decd579e94ee6d9e4af",
+  "blockNumber": "0x02",
+  "gasUsed": "0x010c1c",
+  "cumulativeGasUsed": "0x010c1c",
+  "contractAddress": null,
+  "status": "0x01",
+  "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000080200000000000000000000000000000000000000000201000000020000000000008000000000000000000000000000000000000000000000000020000000000000000000800000000000000400000000010000000000000000000000000000000000000000000000000000000000000100000000000000080000000000000000000000000000000400000000000000000000000000000000002000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000",
+  "from": "0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1",
+  "to": "0xe78a0f7e598cc8b0bb87894b0f60dd2a88d6a8ab",
+  "logs": [
+    {
+      "0": "3e8",
+      "amount": "3e8",
+      "to": "0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1",
+      "_eventName": "Mint"
+    },
+    {
+      "0": "3e8",
+      "value": "3e8",
+      "from": "0x0000000000000000000000000000000000000000",
+      "to": "0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1",
+      "_eventName": "Transfer"
+    }
+  ],
+  "rawlogs": [
+    {
+      "logIndex": "0x00",
+      "transactionIndex": "0x00",
+      "transactionHash": "0xd7f0ba07750626ffd82fa8ad909e2657bc3b181a7896e69212c55f8f83ae89f7",
+      "blockHash": "0xdf328377bbbe15edb59928bb0507a9f7e252e973bcd75decd579e94ee6d9e4af",
+      "blockNumber": "0x02",
+      "address": "0xe78a0f7e598cc8b0bb87894b0f60dd2a88d6a8ab",
+      "data": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+      "topics": [
+        "0x0f6798a560793a54c3bcfe86a93cde1e73087d944c0ea20544137d4121396885",
+        "0x00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1"
+      ],
+      "type": "mined"
+    },
+    {
+      "logIndex": "0x01",
+      "transactionIndex": "0x00",
+      "transactionHash": "0xd7f0ba07750626ffd82fa8ad909e2657bc3b181a7896e69212c55f8f83ae89f7",
+      "blockHash": "0xdf328377bbbe15edb59928bb0507a9f7e252e973bcd75decd579e94ee6d9e4af",
+      "blockNumber": "0x02",
+      "address": "0xe78a0f7e598cc8b0bb87894b0f60dd2a88d6a8ab",
+      "data": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+      "topics": [
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "0x00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1"
+      ],
+      "type": "mined"
+    }
+  ]
+}
 ```
 
 ## Transfer Tokens
 
-Generate a new address:
-
-```
-$ qcli getnewaddress
-qT7FE8Pp1uQ6vAKJ53UF1WprwvfFXbGCzx
-
-$ qcli gethexaddress qT7FE8Pp1uQ6vAKJ53UF1WprwvfFXbGCzx
-68bfd2e027ba8d04e8053faa0c18d1c448962649
-```
-
-Send 100 tokens from `qdgznat81MfTHZUrQrLZDZteAx212X4Wjj` to the new address:
+Send 100 tokens from `0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1` to `0xffcf8fdee72ac11b5c542428b35eef5769c409f0`:
 
 ```
 node index.js transfer \
- qdgznat81MfTHZUrQrLZDZteAx212X4Wjj \
- 68bfd2e027ba8d04e8053faa0c18d1c448962649 \
+ 0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1 \
+ 0xffcf8fdee72ac11b5c542428b35eef5769c409f0 \
  100
 ```
-
-> Note the from address, for now, has to be a base58 address.
 
 The output:
 
 ```
-transfer tx: a32edf3aba47b0eebd96a86f27311d655a66dcdbac9bb2765076044dd0e02c18
-
-{ amount: 0,
-  fee: -0.081064,
-  confirmations: 0,
-  trusted: true,
-  txid: 'a32edf3aba47b0eebd96a86f27311d655a66dcdbac9bb2765076044dd0e02c18',
-  walletconflicts: [],
-  time: 1514359046,
-  timereceived: 1514359046,
-  'bip125-replaceable': 'no',
-  details:
-   [ { account: '',
-       category: 'send',
-       amount: 0,
-       vout: 1,
-       fee: -0.081064,
-       abandoned: false } ],
-  hex: '02000000012ca6dd418e285950a762699cbb3bcb55024e08b73b000f767baea728b60f871d010000004948304502210094d015bcfb8ae4e308d8c4562dd64fb771a23bda3132199750e6116827ef0fba02205387c87857f41a20d3fb88f8f1b6242f92e7065de9420fc17529a41a0a534ac501feffffff02606ecea8d10100001976a914dcd32b87270aeb980333213da2549c9907e09e9488ac000000000000000063010403400d03012844a9059cbb00
-000000000000000000000068bfd2e027ba8d04e8053faa0c18d1c448962649000000000000000000000000000000000000000000000000000000000000006414a778c05f1d0f70f1133f4bbf78c1a9a7bf84aed3c2df070000',
+transfer tx: 0x0e96facc85351227e5fc68c3688713dd6fe6385a7cac4a63cb6c0f9ca5be0a92
+{ hash: '0x0e96facc85351227e5fc68c3688713dd6fe6385a7cac4a63cb6c0f9ca5be0a92',
+  nonce: '0x02',
+  blockHash: '0xabc83d54866df78b9014048df29589ed6d3ab36ea851594dca79b88b67ecb1b2',
+  blockNumber: '0x03',
+  transactionIndex: '0x00',
+  from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+  to: '0xe78a0f7e598cc8b0bb87894b0f60dd2a88d6a8ab',
+  value: '0x0',
+  gas: '0x030d40',
+  gasPrice: '0x04a817c800',
+  input: '0xa9059cbb000000000000000000000000ffcf8fdee72ac11b5c542428b35eef5769c409f00000000000000000000000000000000000000000000000000000000000000064',
+  txid: '0x0e96facc85351227e5fc68c3688713dd6fe6385a7cac4a63cb6c0f9ca5be0a92',
   method: 'transfer',
-  confirm: [Function: confirm]
-}
+  confirm: [Function: confirm] }
+✔ confirm transfer
 ```
 
 ## Get Contract Events
 
 ```
-node index.js logs 12100
+node index.js logs 0
 
-{
-  "entries": [
-    {
-      "blockHash": "369c6ded05c27ae7efc97964cce083b0ea9b8b950e67c51e52cb1bf898b9c415",
-      "blockNumber": 12184,
-      "transactionHash": "d1638a53f38fd68c5763e2eef9d86b9fc6ee7ea3f018dae7b1e385b4a9a78bc7",
-      "transactionIndex": 2,
-      "from": "dcd32b87270aeb980333213da2549c9907e09e94",
-      "to": "a778c05f1d0f70f1133f4bbf78c1a9a7bf84aed3",
-      "cumulativeGasUsed": 39306,
-      "gasUsed": 39306,
-      "contractAddress": "a778c05f1d0f70f1133f4bbf78c1a9a7bf84aed3",
-      "topics": [
-        "0f6798a560793a54c3bcfe86a93cde1e73087d944c0ea20544137d4121396885",
-        "000000000000000000000000dcd32b87270aeb980333213da2549c9907e09e94"
-      ],
-      "data": "00000000000000000000000000000000000000000000000000000000000003e8",
-      "event": {
-        "type": "Mint",
-        "to": "0xdcd32b87270aeb980333213da2549c9907e09e94",
-        "amount": "3e8"
-      }
-    },
-    {
-      "blockHash": "369c6ded05c27ae7efc97964cce083b0ea9b8b950e67c51e52cb1bf898b9c415",
-      "blockNumber": 12184,
-      "transactionHash": "d1638a53f38fd68c5763e2eef9d86b9fc6ee7ea3f018dae7b1e385b4a9a78bc7",
-      "transactionIndex": 2,
-      "from": "dcd32b87270aeb980333213da2549c9907e09e94",
-      "to": "a778c05f1d0f70f1133f4bbf78c1a9a7bf84aed3",
-      "cumulativeGasUsed": 39306,
-      "gasUsed": 39306,
-      "contractAddress": "a778c05f1d0f70f1133f4bbf78c1a9a7bf84aed3",
-      "topics": [
-        "ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-        "0000000000000000000000000000000000000000000000000000000000000000",
-        "000000000000000000000000dcd32b87270aeb980333213da2549c9907e09e94"
-      ],
-      "data": "00000000000000000000000000000000000000000000000000000000000003e8",
-      "event": {
-        "type": "Transfer",
-        "from": "0x0000000000000000000000000000000000000000",
-        "to": "0xdcd32b87270aeb980333213da2549c9907e09e94",
-        "value": "3e8"
-      }
+[
+  {
+    "logIndex": "0x00",
+    "transactionIndex": "0x00",
+    "transactionHash": "0xd7f0ba07750626ffd82fa8ad909e2657bc3b181a7896e69212c55f8f83ae89f7",
+    "blockHash": "0xdf328377bbbe15edb59928bb0507a9f7e252e973bcd75decd579e94ee6d9e4af",
+    "blockNumber": "0x02",
+    "address": "0xe78a0f7e598cc8b0bb87894b0f60dd2a88d6a8ab",
+    "data": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+    "topics": [
+      "0x0f6798a560793a54c3bcfe86a93cde1e73087d944c0ea20544137d4121396885",
+      "0x00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1"
+    ],
+    "type": "mined",
+    "event": {
+      "0": "3e8",
+      "amount": "3e8",
+      "to": "0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1",
+      "_eventName": "Mint"
     }
-  ],
-  "count": 2,
-  "nextblock": 12185
-}
+  },
+  {
+    "logIndex": "0x01",
+    "transactionIndex": "0x00",
+    "transactionHash": "0xd7f0ba07750626ffd82fa8ad909e2657bc3b181a7896e69212c55f8f83ae89f7",
+    "blockHash": "0xdf328377bbbe15edb59928bb0507a9f7e252e973bcd75decd579e94ee6d9e4af",
+    "blockNumber": "0x02",
+    "address": "0xe78a0f7e598cc8b0bb87894b0f60dd2a88d6a8ab",
+    "data": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+    "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+      "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "0x00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1"
+    ],
+    "type": "mined",
+    "event": {
+      "0": "3e8",
+      "value": "3e8",
+      "from": "0x0000000000000000000000000000000000000000",
+      "to": "0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1",
+      "_eventName": "Transfer"
+    }
+  },
+  {
+    "logIndex": "0x00",
+    "transactionIndex": "0x00",
+    "transactionHash": "0x0e96facc85351227e5fc68c3688713dd6fe6385a7cac4a63cb6c0f9ca5be0a92",
+    "blockHash": "0xabc83d54866df78b9014048df29589ed6d3ab36ea851594dca79b88b67ecb1b2",
+    "blockNumber": "0x03",
+    "address": "0xe78a0f7e598cc8b0bb87894b0f60dd2a88d6a8ab",
+    "data": "0x0000000000000000000000000000000000000000000000000000000000000064",
+    "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+      "0x00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1",
+      "0x000000000000000000000000ffcf8fdee72ac11b5c542428b35eef5769c409f0"
+    ],
+    "type": "mined",
+    "event": {
+      "0": "64",
+      "value": "64",
+      "from": "0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1",
+      "to": "0xffcf8fdee72ac11b5c542428b35eef5769c409f0",
+      "_eventName": "Transfer"
+    }
+  }
+]
 ```
 
 ## Stream Contract Events
@@ -178,42 +231,23 @@ node index.js events
 
 Subscribed to contract events
 Ctrl-C to terminate events subscription
-
-{ blockHash: '0d8e0355bf8f1c46aab2d1681003ecb03d9cc7dc2b6aac0d7c34e63c86009cb8',
-  blockNumber: 1969,
-  transactionHash: '42a0c6a95461c8a0d6a2e9630d022933998accddb35cd8c279c0a84cf11f82db',
-  transactionIndex: 1,
-  from: 'dcd32b87270aeb980333213da2549c9907e09e94',
-  to: 'a778c05f1d0f70f1133f4bbf78c1a9a7bf84aed3',
-  cumulativeGasUsed: 39306,
-  gasUsed: 39306,
-  contractAddress: 'a778c05f1d0f70f1133f4bbf78c1a9a7bf84aed3',
+{ logIndex: '0x00',
+  transactionIndex: '0x00',
+  transactionHash: '0x0e96facc85351227e5fc68c3688713dd6fe6385a7cac4a63cb6c0f9ca5be0a92',
+  blockHash: '0xabc83d54866df78b9014048df29589ed6d3ab36ea851594dca79b88b67ecb1b2',
+  blockNumber: '0x03',
+  address: '0xe78a0f7e598cc8b0bb87894b0f60dd2a88d6a8ab',
+  data: '0x0000000000000000000000000000000000000000000000000000000000000064',
   topics:
-   [ '0f6798a560793a54c3bcfe86a93cde1e73087d944c0ea20544137d4121396885',
-     '000000000000000000000000dcd32b87270aeb980333213da2549c9907e09e94' ],
-  data: '00000000000000000000000000000000000000000000000000000000000003e8',
+   [ '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+     '0x00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+     '0x000000000000000000000000ffcf8fdee72ac11b5c542428b35eef5769c409f0' ],
+  type: 'mined',
   event:
-   { type: 'Mint',
-     to: '0xdcd32b87270aeb980333213da2549c9907e09e94',
-     amount: <BN: 3e8> } }
-
-{ blockHash: '0d8e0355bf8f1c46aab2d1681003ecb03d9cc7dc2b6aac0d7c34e63c86009cb8',
-  blockNumber: 1969,
-  transactionHash: '42a0c6a95461c8a0d6a2e9630d022933998accddb35cd8c279c0a84cf11f82db',
-  transactionIndex: 1,
-  from: 'dcd32b87270aeb980333213da2549c9907e09e94',
-  to: 'a778c05f1d0f70f1133f4bbf78c1a9a7bf84aed3',
-  cumulativeGasUsed: 39306,
-  gasUsed: 39306,
-  contractAddress: 'a778c05f1d0f70f1133f4bbf78c1a9a7bf84aed3',
-  topics:
-   [ 'ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
-     '0000000000000000000000000000000000000000000000000000000000000000',
-     '000000000000000000000000dcd32b87270aeb980333213da2549c9907e09e94' ],
-  data: '00000000000000000000000000000000000000000000000000000000000003e8',
-  event:
-   { type: 'Transfer',
-     from: '0x0000000000000000000000000000000000000000',
-     to: '0xdcd32b87270aeb980333213da2549c9907e09e94',
-     value: <BN: 3e8> } }
+   Result {
+     '0': <BN: 64>,
+     value: <BN: 64>,
+     from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+     to: '0xffcf8fdee72ac11b5c542428b35eef5769c409f0',
+     _eventName: 'Transfer' } }
 ```
